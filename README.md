@@ -5,8 +5,8 @@ Thanks for the contribution of Arnaud ADAM!
 Here is a migration guide to help you with! :smile:
 
 In your workspace, create a subdirectory named *m2g*, and in this subdirectory,
-checkout your mercurial repository into a directory (the name doesn't matter, it will be my-hg-project here),
-create an empty directory (which will contain you git project sources). for this example, I'll take my-git-project.
+checkout your mercurial repository into a directory (the name doesn't matter, it will be *my-hg-project* here),
+create an empty directory (which will contain you git project sources). for this example, I'll take *my-git-project*.
 
 * launch your docker container with following command,
 
