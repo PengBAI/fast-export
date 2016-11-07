@@ -1,5 +1,6 @@
 # Mercurial to Git migration guide!
 [![Docker Hub](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com/r/pengbai/docker-mercurial2git/)
+
 Thanks for the contribution of Arnaud ADAM!
 
 Here is a migration guide to help you with! :smile:
