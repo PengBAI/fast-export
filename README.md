@@ -5,14 +5,14 @@ Thanks for the contribution of Arnaud ADAM!
 
 Here is a migration guide to help you with! :smile:
 
-In your workspace, create a subdirectory named *m2g*, and in this subdirectory,
+In your WORKSPACE, create a subdirectory named *m2g*, and in this subdirectory,
 checkout your mercurial repository into a directory (the name doesn't matter, it will be *my-hg-project* here),
 create an empty directory (which will contain you git project sources). for this example, I'll take *my-git-project*.
 
 * launch your docker container with following command,
 
 ```Bash
-$ docker run -it --rm -v workspace/m2g:/home/m2g pengbai/docker-mercurial2git
+$ docker run -it --rm -v WORKSPACE/m2g:/home/m2g pengbai/docker-mercurial2git
 ```
 * go to your empy git directory, and init the repository,
 
