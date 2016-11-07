@@ -11,35 +11,35 @@ create an empty directory (which will contain you git project sources). for this
 * launch your docker container with following command,
 
 ```Bash
-docker@boot2docker:~$ docker run -it --rm -v workspace/m2g:/home/m2g pengbai/docker-mercurial2git
+$ docker run -it --rm -v workspace/m2g:/home/m2g pengbai/docker-mercurial2git
 ```
 * go to your empy git directory, and init the repository,
 
 ```Bash
-cd m2g/my-git-project
-git init
+$ cd m2g/my-git-project
+$ git init
 Initialized empty Git repository in /home/m2g/my-git-project/.git/
 ```
 * then execute fast-export script as follows,
 
 ```Bash
-/home/fast-export/hg-fast-export.sh -r ../my-hg-project
+$ /home/fast-export/hg-fast-export.sh -r ../my-hg-project
 ```
 In theory, you'll see a bunch of logs on your screen. Migration can take a while...
 * finally, do a checkout of your new git project,
 
 ```Bash
-git checkout HEAD
+$ git checkout HEAD
 ```
 * add your remote repository url (replace following url with the real one!),
 
 ```Bash
-git remote add origin https://github.com/xxxx/my-git-project.git
+$ git remote add origin https://github.com/xxxx/my-git-project.git
 ```
 * and push all your project to your new git repository!
 
 ```Bash
-git push origin --all
+$ git push origin --all
 ```
  
 That's all! :sunglasses:
