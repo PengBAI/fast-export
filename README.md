@@ -1,104 +1,55 @@
-hg-fast-export.(sh|py) - mercurial to git converter using git-fast-import
-=========================================================================
+# Mercurial to Git migration guide!
 
-Legal
------
+Thanks for the contribution of Arnaud ADAM!
 
-Most hg-* scripts are licensed under the [MIT license]
-(http://www.opensource.org/licenses/mit-license.php) and were written
-by Rocco Rutte <pdmef@gmx.net> with hints and help from the git list and
-\#mercurial on freenode. hg-reset.py is licensed under GPLv2 since it
-copies some code from the mercurial sources.
+Here is a migration guide to help you with! :smile:
 
-The current maintainer is Frej Drejhammar <frej.drejhammar@gmail.com>.
+In your workspace, create a subdirectory named m2g, and in this subdirectory,
+checkout your mercurial repository into a directory (the name doesn't matter, it will be my-hg-project here),
+create an empty directory (which will contain you git project sources). for this example, I'll take my-git-project.
 
-Usage
------
+* launch your docker container with following command,
 
-Using hg-fast-export is quite simple for a mercurial repository <repo>:
-
+```Bash
+docker@boot2docker:~$ docker run -it --rm -v /vagrant/m2g:/home/m2g pengbai/docker-mercurial2git
 ```
-mkdir repo-git # or whatever
-cd repo-git
+* go to your empy git directory, and init the repository,
+
+```Bash
+cd m2g/my-git-project
 git init
-hg-fast-export.sh -r <repo>
+Initialized empty Git repository in /home/m2g/my-git-project/.git/
 ```
+* then execute fast-export script as follows,
 
-Please note that hg-fast-export does not automatically check out the
-newly imported repository. You probably want to follow up the import
-with a `git checkout`-command.
-
-Incremental imports to track hg repos is supported, too.
-
-Using hg-reset it is quite simple within a git repository that is
-hg-fast-export'ed from mercurial:
-
+```Bash
+/home/fast-export/hg-fast-export.sh -r ../my-hg-project
 ```
-hg-reset.sh -R <revision>
+In theory, you'll see a bunch of logs on your screen. Migration can take a while...
+* finally, do a checkout of your new git project,
+
+```Bash
+git checkout HEAD
 ```
+* add your remote repository url (replace following url with the real one!),
 
-will give hints on which branches need adjustment for starting over
-again.
-
-When a mercurial repository does not use utf-8 for encoding author
-strings and commit messages the `-e <encoding>` command line option
-can be used to force fast-export to convert incoming meta data from
-<encoding> to utf-8. This encoding option is also applied to file names.
-
-In some locales Mercurial uses different encodings for commit messages
-and file names. In that case, you can use `--fe <encoding>` command line
-option which overrides the -e option for file names.
-
-As mercurial appears to be much less picky about the syntax of the
-author information than git, an author mapping file can be given to
-hg-fast-export to fix up malformed author strings. The file is
-specified using the -A option. The file should contain lines of the
-form `FromAuthor=ToAuthor`. The example authors.map below will
-translate `User <garbage<user@example.com>` to `User <user@example.com>`.
-
+```Bash
+git remote add origin https://github.com/xxxx/my-git-project.git
 ```
--- Start of authors.map --
-User <garbage<user@example.com>=User <user@example.com>
--- End of authors.map --
+* and push all your project to your new git repository!
+
+```Bash
+git push origin --all
 ```
+ 
+That's all! :sunglasses:
+You're now able to work with your 'git' project.
 
-Tag and Branch Naming
----------------------
+You can now exit your docker container, and delete the m2g folder (since you're now able to clone your repository anywhere you want!).
 
-As Git and Mercurial have differ in what is a valid branch and tag
-name the -B and -T options allow a mapping file to be specified to
-rename branches and tags (respectively). The syntax of the mapping
-file is the same as for the author mapping.
-
-Notes/Limitations
------------------
-
-hg-fast-export supports multiple branches but only named branches with
-exactly one head each. Otherwise commits to the tip of these heads
-within the branch will get flattened into merge commits.
-
-As each git-fast-import run creates a new pack file, it may be
-required to repack the repository quite often for incremental imports
-(especially when importing a small number of changesets per
-incremental import).
-
-The way the hg API and remote access protocol is designed it is not
-possible to use hg-fast-export on remote repositories
-(http/ssh). First clone the repository, then convert it.
-
-Design
-------
-
-hg-fast-export.py was designed in a way that doesn't require a 2-pass
-mechanism or any prior repository analysis: if just feeds what it
-finds into git-fast-import. This also implies that it heavily relies
-on strictly linear ordering of changesets from hg, i.e. its
-append-only storage model so that changesets hg-fast-export already
-saw never get modified.
-
-Submitting Patches
-------------------
-
-Please use the issue-tracker at github
-https://github.com/frej/fast-export to report bugs and submit
-patches.
+Please note that :
+* the 'default' branch in Mercurial will be the 'master' one in Git...
+* Git doesn't like spaces very much...it means that if you had some branches or tags with spaces into the name, Git will replace it with underscore.
+* Branch with multiple heads isn't allowed. If you closed a branch, and reopen a new one with same name, migration doesn't work.
+ 
+Have fun! :+1:
